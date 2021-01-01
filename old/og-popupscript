@@ -1,0 +1,155 @@
+//if check box selected turn on filter
+//if unchecked run show all
+
+//reverse button? ONLY show those filtered
+
+//grab text entered from input to add to a list.
+
+//each list item gets an "x" to remove
+
+window.addEventListener('load', function () {
+	
+	
+	let AddKeyButton = document.querySelector('#AddKeyButton');
+	let keywordInput = document.querySelector('#keywordInput');	
+	let list = document.querySelector('.keyword-list');	
+	let keywordArrayList = [];
+	
+
+
+	var getPromise = new Promise(function(resolve, reject) {
+		// ***update to async await instead of a setTimeout.
+		getValues();
+
+		setTimeout(() => {			
+			if (keywordArrayList.length) {
+			  resolve("Stuff worked! Array Good");
+			}
+			else {
+			  reject(Error("It broke, need more time?"));
+			}
+		}, 1000);
+
+	});
+
+	var savePromise = new Promise(function(resolve, reject) {
+		// ***update to async await instead of a setTimeout.
+
+		saveChanges();
+
+		setTimeout(() => {			
+			if (keywordArrayList.length) {
+			  resolve("Saved Success");
+			}
+			else {
+			  reject(Error("FAILED to SAVE!!!"));
+			}
+		}, 1000);
+
+	});
+
+
+	getPromise.then(function(result) {
+		console.log("befefore make list:", keywordArrayList);
+		makeList(keywordArrayList);	
+		console.log(result); // "Stuff worked!"
+	}, function(err) {
+		console.log(err); // Error: "It broke"
+	});
+
+	savePromise.then(function(result) {
+		console.log(result); // "Stuff worked!"
+	}, function(err) {
+		console.log(err); // Error: "It broke"
+	});
+
+
+	
+	AddKeyButton.addEventListener('click', function () {
+		let keyword = keywordInput.value;
+		let li = document.createElement('li');
+		
+		// Add the item text
+		li.innerHTML = "<li class='keyword-list__item'>" + keyword + "<a class='close-item' href=''>x</a></li>";
+		list.appendChild(li)
+
+
+
+		keywordArrayList.push(keyword);
+		keywordInput.value = '';
+
+		saveChanges();
+	});
+
+	keywordInput.addEventListener("keydown", function (event) {
+		if (event.keyCode === 13) {	// Number 13 is the "Enter" key on the keyboard
+			event.preventDefault();
+			AddKeyButton.click();
+		}
+		// closeListeners();
+	});
+
+	// let onSwitch = document.getElementById("onSwitch")
+
+	// onSwitch.addEventListener('change', function () {
+	// 	saveChanges();
+	// });
+
+	function saveChanges() {
+		chrome.storage.sync.set({
+			'on': onSwitch.checked,
+			'keywords': keywordArrayList,
+			'reverse': false
+		}, function () {
+			console.log('succesfully saved');
+		});
+	}
+
+	function getValues() {		
+		chrome.storage.sync.get(['on', 'keywords', 'reverse'], function (data) {
+			console.log(data);
+			keywordArrayList = data.keywords;		
+			console.log("getvalue:", keywordArrayList);			
+		});
+
+	}
+
+	function makeList(targetArray) {
+		console.log("targetArray:", targetArray);
+		// Set up a loop that goes through the items in listItems one at a time
+		let numberOfListItems = targetArray.length;
+		
+		for (let j = 0; j < numberOfListItems; ++j) {
+			let li = document.createElement('li');
+
+			// Add the item text
+			li.innerHTML = "<li class='keyword-list__item'>" + targetArray[j] + "<a class='close-item' href=''>x</a></li>";
+			
+			list.appendChild(li)
+
+			let closeButton = li.querySelector('.close-item');
+			closeButton.addEventListener('click', function(event) {
+					var array = keywordArrayList;
+					var newarr = array.filter(function(a){return a !== targetArray[j] });
+					console.log("J:", targetArray[j]);
+					keywordArrayList = newarr;
+					console.log(keywordArrayList);
+					saveChanges();
+					promise.then(function(result) {
+						makeList(keywordArrayList);	
+						console.log(result); // "Stuff worked!"
+					}, function(err) {
+						console.log(err); // Error: "It broke"
+					});
+	
+			});		
+
+			keywordInput.value = '';
+		}		
+	}
+
+
+});
+
+
+

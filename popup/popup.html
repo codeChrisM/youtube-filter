@@ -1,0 +1,80 @@
+<html>
+<head>
+  <script type="text/javascript" src="popupScript.js"></script>
+  <style>
+	body{ width:300px;}
+  	.extraArea {
+		margin: 2em 0;
+		border-top: solid #000;
+	}
+	.keyword-list{
+		display: flex;
+		justify-content: space-between;
+		list-style: none;
+		flex-wrap: wrap;
+		padding: 0;
+	}
+	li.keyword-list__item {
+		background-color: lightgrey;
+		padding: .25rem;
+		margin: .2rem 0;
+		border-radius: 5px;
+	}
+	
+	li.keyword-list__item {
+		padding: .25rem;
+		margin: .2rem 0;
+		border-radius: 5px;
+	}
+	.close-item{
+		content:'';
+		position: relative;
+		background: #ececec;
+		border-radius: 100%;
+		width: 1rem;
+		height: 1rem;
+		color: black;
+		margin: 0 0 0 .5rem;
+		border: 3px solid darkgrey;
+		display: inline-block;
+		text-align: center;
+		text-decoration: none;
+		transition: all .25s;
+	}
+	.close-item:after {
+		content: 'x';
+	}
+	.close-item:hover{
+		background: red;
+		border-color: red;
+		cursor: pointer;
+		color:#fff;
+	}
+</style>
+</head>
+<body>
+	<h3>Youtube Filter </h3>
+	<div >
+		<label><b>Step:1</b></br>
+		Do you want this filter on?
+		</label>
+		<input type="checkbox" name="onSwitch" class="onSwitch-checkbox" id="onSwitch">
+		<input id="keywordInput" type="text" >
+		<button id="AddKeyButton"> Add</button>
+	</div>
+	<div>
+		<ul class="keyword-list">
+			<li class="keyword-list__item">Youtube Filter</li>
+		</ul>
+	</div>
+
+	<div class="extraArea">
+		<div> Creator: CodeChris </div>
+		<a href="https://www.youtube.com/channel/UCPq8BlC_MR6w3QmUJpg22nQ"  target="_blank">Youtube Channel</a>
+		<a href="https://github.com/codeChrisM/Keyword-Filter-Chrome-Extension-">Help Contribute to Git Project</a>
+	</div>
+
+
+</body>
+</html>	
+
